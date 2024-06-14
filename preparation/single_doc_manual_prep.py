@@ -49,7 +49,7 @@ def find_attrs(segs):
                     cur.append({'text': run.text, 'italic': italic, 'color': color, 'bold': bold})
 
                 if bckg:
-                    if 'background' in state.keys():
+                    if 'background' in cur[-1].keys():
                         cur[-1]['background'] = cur[-1]['background'] + ' ' + str(bckg)
                     else:
                         cur[-1]['background'] = str(bckg)
