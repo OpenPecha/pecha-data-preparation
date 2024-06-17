@@ -264,7 +264,6 @@ def parse_doc(in_file):
 
     out = format_output(with_attrs)
 
-    out_file = Path(in_file).parent / (Path(in_file).stem + '_parsed.txt')
+    out_file = Path('output') / (Path(in_file).stem + '_parsed.txt')
     out_file.write_text(out)
     print()
-
