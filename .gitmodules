@@ -1,0 +1,3 @@
+[submodule "preparation/third_party/leavedonto"]
+	path = preparation/third_party/leavedonto
+	url = https://github.com/Esukhia/leavedonto.git
