@@ -8,30 +8,7 @@ from pydrive2.files import FileNotDownloadableError
 from .sanity_checks import SanityCheck
 
 
-def download_drive_folder(local_path, drive_id):
-    get = RetrieveDriveFiles()
-    get.download_folder(local_path, drive_id)
-
-
-def upload_to_drive(driver_folders):
-    to_upload_file = Path("to_upload.txt")
-    if not to_upload_file.is_file():
-        print('Exiting: there is no "to_upload.txt" file.')
-        return
-
-    files_list = to_upload_file.read_text().strip().split("\n")
-    files_list = [Path(f) for f in files_list]
-    to_upload = []
-    for f in files_list:
-        idx = int(f.parts[1].split(" ")[0]) - 1
-        to_upload.append((driver_folders[idx], f))
-
-    pf = PushDriveFiles()
-    pf.push_files(to_upload)
-    to_upload_file.unlink()
-
-
-class RetrieveDriveFiles:
+class DriveInterface:
     def __init__(self):
         self.drive = self.__login()
         self.file_types = {'spreadsheet': ['application/vnd.google-apps.spreadsheet',
@@ -39,11 +16,8 @@ class RetrieveDriveFiles:
                            'document': ['application/vnd.google-apps.document',
                                         'application/vnd.openxmlformats-officedocument.wordprocessingml.document']}
 
-    def __login(self):
-        return GoogleDrive(self.__login_with_service_account())
-
     @staticmethod
-    def __login_with_service_account():
+    def __login():
         """
         Google Drive service with a service account.
         note: for the service account to work, you need to share the folder or
@@ -64,7 +38,7 @@ class RetrieveDriveFiles:
         gauth = GoogleAuth(settings=settings)
         # Authenticate
         gauth.ServiceAuth()
-        return gauth
+        return GoogleDrive(gauth)
 
     def download_catalog(self, doc_path, doc_id):
         # can be generalized to become download_file()
@@ -75,6 +49,17 @@ class RetrieveDriveFiles:
         except FileNotDownloadableError:
             print('Links can not be downloaded. Passing...')
         return file["title"]
+
+    def upload_catalog(self, doc_path, doc_id):
+        params = {
+            "title": doc_path.name,
+            "mimeType": self.file_types["spreadsheet"][1],
+            "id": doc_id
+        }
+        drive_file = self.drive.CreateFile(params)
+        drive_file.SetContentFile(doc_path)
+        convert = False  # convert or not to a Google Document
+        drive_file.Upload(param={"convert": convert})
 
     def download_folder(self, local_path, drive_id):
         # create or empty local folder
@@ -90,10 +75,10 @@ class RetrieveDriveFiles:
                                          "includeItemsFromAllDrives": "true"}).GetList()
 
         # add files in subfolders
-        new_files = self.list_subfolders(file_list)
+        new_files = self.__list_subfolders(file_list)
         file_list.extend(new_files)
 
-        SanityCheck.drive_files_are_pairs(file_list)
+        SanityCheck.that_drive_files_are_pairs(file_list)
 
         # download files
         for file in file_list:
@@ -111,7 +96,7 @@ class RetrieveDriveFiles:
                 except FileNotDownloadableError:
                     print('Links can not be downloaded. Passing...')
 
-    def list_subfolders(self, file_list):
+    def __list_subfolders(self, file_list):
         new_files = []
         for f in file_list:
             if 'folder' in f["mimeType"]:

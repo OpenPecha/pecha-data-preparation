@@ -1,15 +1,21 @@
 from pathlib import Path
 from collections import defaultdict
 
+from openpyxl import load_workbook
+from uuid import uuid4
+
 from .third_party.leavedonto.leavedonto import LeavedOnto
 
 
 class CatalogManager:
-    def __init__(self, cat_file):
+    def __init__(self, cat_file, metadata_path):
         self.cat_file = Path(cat_file)
-        self.works, self.onto = self.parse_cat_file()
+        self.current_texts, self.works = None, None
+        self.uncategorized, self.onto = [], None
+        self.__parse_cat_file()
+        self.__parse_meta_spreadsheets(metadata_path)
 
-    def parse_cat_file(self):
+    def __parse_cat_file(self):
         lo = LeavedOnto(self.cat_file)
         entries = lo.ont.export_all_entries()
         cats_meta = self.__gather_cat_metadata(lo.ont, entries)
@@ -18,14 +24,21 @@ class CatalogManager:
         works = {}
         for cats, data in entries:
             for d in data:
-                if d[-2]:
-                    key = (d[-2], d[-1])
+                if d[4]:
+                    key = (d[4], d[5])
                     value = []
+                    is_uncat = False
                     for c in cats:
-                        if 'data' not in c:
+                        if c == 'Uncategorized':
+                            is_uncat = True
+                        if 'data' not in c and c != 'Uncategorized':
                             value.append(cats_meta[c])
-                    works[key] = value
-        return works, lo
+                    if is_uncat and key[0]:
+                        self.uncategorized.append(key[0])
+                    else:
+                        works[key] = value
+        self.works = works
+        self.onto = lo
 
     @staticmethod
     def __gather_cat_metadata(onto, entries):
@@ -47,15 +60,66 @@ class CatalogManager:
                     cats_data[elts['bo']['cat_name']] = elts
         return cats_data
 
+    # extract text name,
+    # generate uuid,
+    # keep only those not in self.works
+    # add (title, uuid) pairs to "unassigned" in onto,
+    # export onto as xlsx,
+    # update catalog in Drive
     def include_new_texts(self, local_path):
+        # parse metadata of current texts
+        existing_texts = [w[0] for w in self.works.keys()]
+        unassigned = []
+        for cur, _ in self.current_texts.items():
+            if cur in existing_texts:
+                print('!!!text with same name exists. if it is different, please change the name!!!')
+                # todo: add this info to a report for Data Team to process.
+            elif cur in self.uncategorized:
+                continue
+            else:
+                entry = cur, uuid4().hex
+                unassigned.append(entry)
+
+        # add new texts to onto
+        for k, v in unassigned:
+            self.onto.ont.head.children['Uncategorized'].data.append(['', '', '', '', k, v])
+
+        # export updated onto file if any unassigned texts found
+        if unassigned:
+            if self.onto.ont_path.is_file():
+                self.onto.ont_path.unlink()
+            self.onto.convert2xlsx(self.onto.ont_path.parent)
+            return True
+        return False
+
+    def __parse_meta_spreadsheets(self, local_path):
+        #TODO: add sanity check to ensure that the minimal fields are filled.
+        current_texts = {}
         local_path = Path(local_path)
         for f in local_path.glob('*.xlsx'):
-            #todo: read with openyxl,
-            # extract text name,
-            # generate uuid,
-            # keep only those not in self.works
-            # add (title, uuid) pairs to "unassigned" in onto,
-            # export onto as xlsx,
-            # update catalog in Drive
-            print()
-        pass
+            wb = load_workbook(f)
+            # assuming the first sheet is the good one
+            # more than one sheet is not allowed
+            # todo: add a sanity test
+            sheet = list(wb)[0]
+            # read data
+            raw_data = []
+            for row in sheet.rows:
+                row = [r.value for r in row]
+                raw_data.append(row)
+            # parse data
+            name = ''
+            parsed = defaultdict(dict)
+            langs = raw_data[0][1:]
+            keys = [r[0] for r in raw_data[1:] if r[0]]
+            for num, key in enumerate(keys):
+                for i, lang in enumerate(langs):
+                    value = raw_data[num+1][i+1]
+                    if lang == 'BO' and key == 'usage_title' and value:
+                        name = value
+                    elif lang == 'BO' and key == 'title_short' and value:
+                        name = value
+                    parsed[key][lang] = value
+
+            current_texts[name] = parsed
+        self.current_texts = current_texts

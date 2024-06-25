@@ -6,7 +6,7 @@ class SanityCheck:
         pass
 
     @staticmethod
-    def drive_files_are_pairs(file_list):
+    def that_drive_files_are_pairs(file_list):
         """
         currently only checks that there are no less and no more than 2 files with the same name in the folder
 

@@ -2,7 +2,7 @@ from pathlib import Path
 import yaml
 import textwrap
 
-from .google_drive import RetrieveDriveFiles
+from .google_drive import DriveInterface
 from .catalog_manager import CatalogManager
 
 
@@ -31,20 +31,24 @@ class DriveManager:
         drive_id = self.conf['data_drive_folder_id']
         catalog_path = self.conf['catalog_doc_path']
         catalog_id = self.conf['catalog_doc_id']
-        drive = RetrieveDriveFiles()
+        drive = DriveInterface()
 
         # A download all the files in the folder
-        #drive.download_folder(local_path, drive_id)
+        drive.download_folder(local_path, drive_id)
 
         # B.1 download the catalog
-        #catalog_name = drive.download_catalog(catalog_path, catalog_id)
+        catalog_name = drive.download_catalog(catalog_path, catalog_id)
 
         # B.2 parse the catalog
-        catalog_name = 'Pecha Text Catalog.xlsx'
-        f = Path(catalog_path) / catalog_name
-        cm = CatalogManager(f)
+        # # catalog_name = 'Pecha Text Catalog.xlsx'
+        catalog_file_path = Path(catalog_path) / catalog_name
+        cm = CatalogManager(catalog_file_path, local_path)
 
         # B.3 add new files in catalog + push updated catalog to Drive
-        cm.include_new_texts(local_path)
+        catalog_updated = cm.include_new_texts(local_path)
 
-        print()
+        # B.4 upload updated catalog to Drive
+        # # catalog_updated = True
+        if catalog_updated:
+            drive.upload_catalog(catalog_file_path, catalog_id)
+            print()
