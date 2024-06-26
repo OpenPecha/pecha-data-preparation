@@ -1,0 +1,237 @@
+སངས་རྒྱས་ཆོས་ཚོགས་མ།: !!python/object/apply:collections.defaultdict
+  args:
+  - &id001 !!python/name:builtins.dict ''
+  dictitems:
+    author:
+      BO: ཇོ་བོ་རྗེ་དཔལ་ལྡན་ཨ་ཏི་ཤ།
+      EN: null
+    composition_date:
+      BO: null
+      EN: null
+    other:
+      type: root_text
+    presentation:
+      BO: null
+      EN: null
+    source:
+      BO: http://purl.bdrc.io/resource/WA0XL9ED6898E9FE8
+      EN: null
+    title_alt_1:
+      BO: null
+      EN: null
+    title_alt_2:
+      BO: null
+      EN: null
+    title_long_clean:
+      BO: སྐྱབས་སེམས་སྦྲགས་མ།
+      EN: null
+    title_short:
+      BO: སྐྱབས་སེམས་སྦྲགས་མ།
+      EN: null
+    usage_title:
+      BO: སངས་རྒྱས་ཆོས་ཚོགས་མ།
+      EN: null
+སངས་རྒྱས་ཆོས་ཚོགས་མའི་ཚིག་དོན།: !!python/object/apply:collections.defaultdict
+  args:
+  - *id001
+  dictitems:
+    author:
+      BO: དགེ་བཤེས་བློ་བཟང་ཟླ་བ།
+      EN: null
+    composition_date:
+      BO: null
+      EN: null
+    other:
+      root_text: སངས་རྒྱས་ཆོས་ཚོགས་མ།
+      type: commentary
+    presentation:
+      BO: null
+      EN: null
+    source:
+      BO: དེབ་གཟུགས་ནས་འཕྲུལ་དེབ་བཟོས་ཡོད་པས་དྲྭ་ཐག་མེད།
+      EN: null
+    title_alt_1:
+      BO: ནང་ཆོས་དྲི་ལན་བློ་གསར་རེ་སྐོང་དང་སྟོན་པའི་གསུང་གི་བདུད་རྩི།
+      EN: null
+    title_alt_2:
+      BO: null
+      EN: null
+    title_long_clean:
+      BO: 'སངས་རྒྱས་ཆོས་ཚོགས་མའི་ཚིག་དོན་ནི། '
+      EN: null
+    title_short:
+      BO: སངས་རྒྱས་ཆོས་ཚོགས་མའི་ཚིག་དོན།
+      EN: null
+    usage_title:
+      BO: null
+      EN: null
+སངས་རྒྱས་ཆོས་ཚོགས་མའི་འབྲུ་འགྲེལ།: !!python/object/apply:collections.defaultdict
+  args:
+  - *id001
+  dictitems:
+    author:
+      BO: རཏྣ་ཤུཀར།
+      EN: null
+    composition_date:
+      BO: null
+      EN: null
+    other:
+      root_text: སངས་རྒྱས་ཆོས་ཚོགས་མ།
+      type: commentary
+    presentation:
+      BO: null
+      EN: null
+    source:
+      BO: https://www.khabdha.org/%E0%BC%88-%E0%BD%A6%E0%BD%84%E0%BD%A6%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%A6%E0%BC%8B%E0%BD%86%E0%BD%BC%E0%BD%A6%E0%BC%8B%E0%BD%9A%E0%BD%BC%E0%BD%82%E0%BD%A6%E0%BC%8B%E0%BD%98%E0%BD%A0/
+      EN: null
+    title_alt_1:
+      BO: null
+      EN: null
+    title_alt_2:
+      BO: null
+      EN: null
+    title_long_clean:
+      BO: སངས་རྒྱས་ཆོས་ཚོགས་མའི་འབྲུ་འགྲེལ།
+      EN: null
+    title_short:
+      BO: སངས་རྒྱས་ཆོས་ཚོགས་མའི་འབྲུ་འགྲེལ།
+      EN: null
+    usage_title:
+      BO: null
+      EN: null
+སྐྱབས་འགྲོ་སེམས་བསྐྱེད་ཤིན་དུ་བསྡུས་པ།: !!python/object/apply:collections.defaultdict
+  args:
+  - *id001
+  dictitems:
+    author:
+      BO: བླ་མ་ཞང་བརྩོན་འགྲུས་གྲགས་པ།
+      EN: null
+    composition_date:
+      BO: null
+      EN: null
+    other:
+      root_text: སངས་རྒྱས་ཆོས་ཚོགས་མ།
+      type: commentary
+    presentation:
+      BO: null
+      EN: null
+    source:
+      BO: http://purl.bdrc.io/resource/WA0XL73F02E99B2E2
+      EN: null
+    title_alt_1:
+      BO: null
+      EN: null
+    title_alt_2:
+      BO: null
+      EN: null
+    title_long_clean:
+      BO: སྐྱབས་འགྲོ་སེམས་བསྐྱེད་ཤིན་ཏུ་བསྡུས་པ།
+      EN: null
+    title_short:
+      BO: སྐྱབས་འགྲོ་སེམས་བསྐྱེད་ཤིན་དུ་བསྡུས་པ།
+      EN: null
+    usage_title:
+      BO: null
+      EN: null
+སྐྱབས་སེམས་ཀྱི་ཁྲིད་བསྡུས་སངས་རྒྱས་ཆོས་ཚོགས་མའི་འགྲེལ་པ།: !!python/object/apply:collections.defaultdict
+  args:
+  - *id001
+  dictitems:
+    author:
+      BO: རྫ་དཔལ་སྤྲུལ་ཨོ་རྒྱན་འཇིགས་མེད་ཆོས་ཀྱི་དབང་པོ།
+      EN: null
+    composition_date:
+      BO: null
+      EN: null
+    other:
+      root_text: སངས་རྒྱས་ཆོས་ཚོགས་མ།
+      type: commentary
+    presentation:
+      BO: null
+      EN: null
+    source:
+      BO: http://purl.bdrc.io/resource/WA0XLE93FBDBA4082
+      EN: null
+    title_alt_1:
+      BO: null
+      EN: null
+    title_alt_2:
+      BO: null
+      EN: null
+    title_long_clean:
+      BO: སྐྱབས་སེམས་ཀྱི་ཁྲིད་བསྡུས་སངས་རྒྱས་ཆོས་ཚོགས་མའི་འགྲེལ་པ་བཞུགས་སོ།
+      EN: null
+    title_short:
+      BO: སྐྱབས་སེམས་ཀྱི་ཁྲིད་བསྡུས་སངས་རྒྱས་ཆོས་ཚོགས་མའི་འགྲེལ་པ།
+      EN: null
+    usage_title:
+      BO: null
+      EN: null
+སྐྱབས་སེམས་བསྡུས་འགྲེལ་དོན་གསལ་མེ་ལོང་།: !!python/object/apply:collections.defaultdict
+  args:
+  - *id001
+  dictitems:
+    author:
+      BO: འབྲི་གུང་ངེས་དོན་རིན་པོ་ཆེ་ངེས་དོན་འཛམ་གླིང་ཆོས་བསྒྲགས་རྒྱ་མཚོ།
+      EN: null
+    composition_date:
+      BO: null
+      EN: null
+    other:
+      root_text: སངས་རྒྱས་ཆོས་ཚོགས་མ།
+      type: commentary
+    presentation:
+      BO: null
+      EN: null
+    source:
+      BO: http://purl.bdrc.io/resource/WA0XLB31A436D79CC
+      EN: null
+    title_alt_1:
+      BO: null
+      EN: null
+    title_alt_2:
+      BO: null
+      EN: null
+    title_long_clean:
+      BO: སྐྱབས་སེམས་བསྡུས་འགྲེལ་དོན་གསལ་མེ་ལོང་ཞེས་བྱ་བ་བཞུགས་སོ།
+      EN: null
+    title_short:
+      BO: སྐྱབས་སེམས་བསྡུས་འགྲེལ་དོན་གསལ་མེ་ལོང་།
+      EN: null
+    usage_title:
+      BO: null
+      EN: null
+སྐྱབས་སེམས་འགྲེལ་པ།: !!python/object/apply:collections.defaultdict
+  args:
+  - *id001
+  dictitems:
+    author:
+      BO: རྫ་རོང་ཕུ་སྤྲུལ་སྐུ་ངག་དབང་བསྟན་འཛིན་ནོར་བུ།
+      EN: null
+    composition_date:
+      BO: null
+      EN: null
+    other:
+      root_text: སངས་རྒྱས་ཆོས་ཚོགས་མ།
+      type: commentary
+    presentation:
+      BO: null
+      EN: null
+    source:
+      BO: http://purl.bdrc.io/resource/WA0XL1A38B0903465
+      EN: null
+    title_alt_1:
+      BO: null
+      EN: null
+    title_alt_2:
+      BO: null
+      EN: null
+    title_long_clean:
+      BO: སྐྱབས་སེམས་སངས་རྒྱས་ཆོས་ཚོགས་མའི་འགྲེལ་པ་མདོར་བསྡུས་བཞུགས་སོ།
+      EN: null
+    title_short:
+      BO: སངས་རྒྱས་ཆོས་ཚོགས་མའི་འགྲེལ་པ་མདོར་བསྡུས།
+      EN: null
+    usage_title:
+      BO: སྐྱབས་སེམས་འགྲེལ་པ།
+      EN: null
