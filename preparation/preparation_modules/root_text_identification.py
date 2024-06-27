@@ -45,6 +45,7 @@ def identify_roottext_citations(root, comt):
                 c['r_idx'].append(num)
 
     # remove syllables that come before current index in root text
+    # todo: flag particles and allow jumping over them to next syllable in root text
     r_indexes = [i for i, r in enumerate(root_syls) if r['clean']]
     r_idx = r_indexes.pop(0)
     cur_pos = {}  # roughly estimated value
