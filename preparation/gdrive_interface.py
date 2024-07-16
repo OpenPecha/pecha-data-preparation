@@ -54,13 +54,9 @@ class DriveManager:
 
     def download_n_parse_catalog(self):
         local_path = self.conf['data_local_folder_path']
-        drive_id = self.conf['data_drive_folder_id']
         catalog_path = self.conf['catalog_doc_path']
         catalog_id = self.conf['catalog_doc_id']
         drive = DriveInterface()
-
-        # A download all the files in the folder
-        drive.download_folder(local_path, drive_id)
 
         # B.1 download the catalog
         catalog_name = drive.download_catalog(catalog_path, catalog_id)
