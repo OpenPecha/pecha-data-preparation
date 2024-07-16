@@ -32,7 +32,7 @@ def move_to_next_syl(idx, syls):
     return idx, syl
 
 
-def identify_roottext_citations(root, comt):
+def detect_root_text_syls(root, comt):
     root_syls = parse_text(root)
     root_syls_idx = [r for r, entry in enumerate(root_syls) if entry['clean']]
     comt_syls = parse_text(comt)
@@ -56,13 +56,38 @@ def identify_roottext_citations(root, comt):
                 if root_idx in syl['r_idx'] and not found:
                     if 'first_occ' not in syl:
                         syl['first_occ'] = []
-                    if not syl['first_occ']:  # ignore syllables where a first occurence has already been found
+                    if not syl['first_occ']:  # ignore syllables where a first occurrence has already been found
                         syl['first_occ'].append(root_idx)
                         found = True
 
+    firsts = []
+    i = 0
+    prev = None
+    cur = None
+    next = None
+    initiated = False
+    while i < len(comt_syls):
+        syl = comt_syls[i]
+        if 'first_occ' in syl:
+            if not initiated:
+                if not prev:
+                    prev = syl['first_occ'][0]
+                elif not cur:
+                    cur = syl['first_occ'][0]
+                elif not next:
+                    next = syl['first_occ'][0]
+                    initiated = True
+            else:
+                firsts.append((prev, cur, next))
+                prev = cur
+                cur = next
+                next = syl['first_occ'][0]
+        i += 1
+    print('\n'.join([f'{p} {c} {n}' for p, c, n in firsts]))
+    print()
     # 2. filtering false positives:
 
-    # 2.a remove all the occurrences of next_syl_idx from next_syl_idx until cur_syl_idx+1
+    # 2.a remove all the occurrences of next_syl_idx in span:  from next_syl_idx until cur_syl_idx+1
     #     secondary effect: removes 'first_occ' for some of the syllables.
     cur_first_occ_idx = 0
     cur_first_occ = root_syls_idx[cur_first_occ_idx]
@@ -95,16 +120,60 @@ def identify_roottext_citations(root, comt):
                     # ######################################
             cur_first_occ_idx += 1
 
-    # 2.b find first occurrence for root syls in first_occ_deleted list
-    print()
+    # 2.b find first occurrence for root syls in first_occ_deleted list. do not try to find their correct location.
+    first_occ_deleted = sorted(first_occ_deleted)
+    # this is a copy of code in section 1. with modifications on comments
+    for root_idx in first_occ_deleted:  # changed from looping over `root_syls_idx`
+        found = False
+        for num, syl in enumerate(comt_syls):
+            if syl['clean'] and 'r_idx' in syl:
+                if root_idx in syl['r_idx'] and not found:
+                    if 'first_occ' not in syl:
+                        syl['first_occ'] = []
+                    if not syl['first_occ']:
+                        syl['first_occ'].append(root_idx)
+                        found = True
 
-    # 2.c flag all first_occ indices that are bigger than the next first_occ. remove first_occ
+    # 2.c flag all first_occ indices that are bigger than the next first_occ.
+    #     remove first_occ and all subsequent occurrences
+
+    # ################ initial values ###########################
+    first_occ_seq = []
+
+    cur_first_root_idx = 0
+    for num, r_syl in enumerate(root_syls):
+        if 'clean' in r_syl:
+            cur_first_root_idx = num
+            break
+
+    cur_first_occ_syl = root_syls[cur_first_root_idx]['clean']
+    cur_first_occ_idx = None
+    for num, syl in enumerate(comt_syls):
+        if 'first_occ' in syl and syl['clean'] == cur_first_occ_syl:
+            cur_first_occ_idx = num
+            break
+    # ###########################################################
+
+    next_first_occ_syl = None
+    next_first_root_idx = None
+    next_first_occ_idx = None
+    on_hold_first_occs = []
+    for num, syl in enumerate(comt_syls):
+        if 'first_occ' in syl:
+            next_first_root_idx = syl['first_occ'][0]
+            next_first_occ_syl = root_syls[next_first_root_idx]['clean']
+            next_first_occ_idx = num
+
+            if next_first_occ_idx < cur_first_occ_idx:
+                print()
+                pass
 
     # 2.d chunk syls in intervals between first occurences and remove all indices that are bigger than the first_occ
     #     at the right boundary of the chunk
 
-    # 2.e remove all occurences that happen after the right boundary + a maximum value (between 20 and 100 syls)
+    # 2.e remove all occurrences that happen after the right boundary + a maximum value (between 20 and 100 syls)
 
+    # 2.f remove all occurrences of particles except for first_occ
 
     # remove syllables that come before current index in root text
     # todo: flag particles and allow jumping over them to next syllable in root text
@@ -130,7 +199,7 @@ def identify_roottext_citations(root, comt):
         for c in comt:
             raw = c['raw']
             if 'r_idx' in c:
-                raw = f'««{raw}»»'
+                raw = f'««{raw}{c["r_idx"]}»»'
             out.append(raw)
 
         return ''.join(out)
