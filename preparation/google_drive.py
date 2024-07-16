@@ -78,7 +78,8 @@ class DriveInterface:
         new_files = self.__list_subfolders(file_list)
         file_list.extend(new_files)
 
-        SanityCheck.that_drive_files_are_pairs(file_list)
+        # TODO: adjust sanity test to check that each file has a sheet in the metadata spreadsheet
+        # SanityCheck.that_drive_files_are_pairs(file_list)
 
         # download files
         for file in file_list:

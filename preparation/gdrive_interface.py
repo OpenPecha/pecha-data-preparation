@@ -34,13 +34,13 @@ class DriveManager:
         drive = DriveInterface()
 
         # A download all the files in the folder
-        #drive.download_folder(local_path, drive_id)
+        drive.download_folder(local_path, drive_id)
 
         # B.1 download the catalog
-        #catalog_name = drive.download_catalog(catalog_path, catalog_id)
+        catalog_name = drive.download_catalog(catalog_path, catalog_id)
 
         # B.2 parse the catalog
-        catalog_name = 'Pecha Text Catalog.xlsx'
+        # # catalog_name = 'Pecha Text Catalog.xlsx'
         catalog_file_path = Path(catalog_path) / catalog_name
         cm = CatalogManager(catalog_file_path, local_path)
 
@@ -51,4 +51,23 @@ class DriveManager:
         # # catalog_updated = True
         if catalog_updated:
             drive.upload_catalog(catalog_file_path, catalog_id)
-            print()
+
+    def download_n_parse_catalog(self):
+        local_path = self.conf['data_local_folder_path']
+        drive_id = self.conf['data_drive_folder_id']
+        catalog_path = self.conf['catalog_doc_path']
+        catalog_id = self.conf['catalog_doc_id']
+        drive = DriveInterface()
+
+        # A download all the files in the folder
+        # drive.download_folder(local_path, drive_id)
+
+        # B.1 download the catalog
+        # catalog_name = drive.download_catalog(catalog_path, catalog_id)
+
+        # B.2 parse the catalog
+        catalog_name = 'Pecha Text Catalog.xlsx'
+        catalog_file_path = Path(catalog_path) / catalog_name
+        cm = CatalogManager(catalog_file_path, local_path)
+        catalog = cm.parse_catalog()
+        return catalog

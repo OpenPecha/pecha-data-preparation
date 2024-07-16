@@ -3,6 +3,7 @@ from collections import defaultdict
 
 from openpyxl import load_workbook
 from uuid import uuid4
+import yaml  # PyYaml package
 
 from .third_party.leavedonto.leavedonto import LeavedOnto
 
@@ -137,3 +138,42 @@ class CatalogManager:
             self.onto.convert2xlsx(self.onto.ont_path.parent)
             return True
         return False
+
+    def parse_catalog(self):
+        yaml_str = self.onto.export_yaml_str()
+        struct = yaml.safe_load(yaml_str)
+        parsed = self.__parse_cat_struct(struct)
+        return parsed
+
+    @staticmethod
+    def __parse_cat_struct(struct):
+        def recursive_parse(to_parse, legend):
+            for k, v in to_parse.items():
+                if 'data' in k:
+                    # parsing data
+                    parsed = {k: {} for k in legend[1:4]}
+                    parsed['works'] = []
+                    for line in v:
+                        lang = line[0]
+                        if lang:
+                            for n, l in enumerate(line[:4]):
+                                if n >= 1:
+                                    parsed[legend[n]][lang] = l
+                        if line[4]:
+                            parsed['works'].append((line[4], line[5]))
+                    # replace unparsed content with parsed
+                    to_parse[k] = parsed
+                elif k == 'Uncategorized':
+                    continue
+                else:
+                    recursive_parse(v, legend)
+
+        # actual parsing
+        recursive_parse(struct['ont'], struct['legend'])
+
+        # cleanup
+        del struct['legend']
+        del struct['ont']['Uncategorized']
+        struct = struct['ont']
+
+        return struct
